@@ -1,6 +1,3 @@
-var https = require("follow-redirects").https;
-var fs = require("fs");
-
 const FRIGATE_URL = process.env.FRIGATE_URL || "";
 const FRIGATE_TOKEN = process.env.FRIGATE_TOKEN || "";
 
@@ -34,7 +31,7 @@ var facesFetch = await fetch(FRIGATE_URL + "/api/faces", {
   method: "GET",
   headers: {
     Accept: "application/json",
-    Authorization: "Bearer " + FRIGATE_TOKEN,
+    Authorization: "Bearer " + process.env.FRIGATE_TOKEN,
   },
 });
 var facesData = await facesFetch.text()
