@@ -1,31 +1,42 @@
-var https = require('follow-redirects').https;
-var fs = require('fs');
+var https = require("follow-redirects").https;
+var fs = require("fs");
 
-var options = {
-  'method': 'GET',
-  'hostname': 'demo.frigate.video',
-  'path': '/api/faces',
-  'headers': {
-    'Accept': 'application/json'
+const FRIGATE_URL = process.env.FRIGATE_URL || "";
+const FRIGATE_TOKEN = process.env.FRIGATE_TOKEN || "";
+
+if (!FRIGATE_TOKEN) {
+  const FRIGATE_USERNAME = process.env.FRIGATE_USERNAME || "";
+  const FRIGATE_PASSWORD = process.env.FRIGATE_PASSWORD || "";
+
+  var tokenReq = await fetch(FRIGATE_URL + "/api/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      user: FRIGATE_USERNAME,
+      password: FRIGATE_PASSWORD,
+    }),
+  });
+
+  if (!tokenReq.ok) {
+    throw new Error("Failed to fetch token: " + tokenReq.statusText);
+  }
+  const cookieHeader = tokenReq.headers.get("set-cookie") || "";
+  const cookiePart = cookieHeader.split(";")[0];
+  const cookieParts = cookiePart?.split("=") || [];
+  process.env.FRIGATE_TOKEN = cookieParts[1] || "";
+  console.log("Logged in successfully: " + process.env.FRIGATE_TOKEN);
+}
+
+var facesFetch = await fetch(FRIGATE_URL + "/api/faces", {
+  method: "GET",
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer " + FRIGATE_TOKEN,
   },
-  'maxRedirects': 20
-};
-
-var req = https.request(options, function (res) {
-  var chunks = [];
-
-  res.on("data", function (chunk) {
-    chunks.push(chunk);
-  });
-
-  res.on("end", function (chunk) {
-    var body = Buffer.concat(chunks);
-    console.log(body.toString());
-  });
-
-  res.on("error", function (error) {
-    console.error(error);
-  });
 });
+var facesData = await facesFetch.text()
 
-req.end();
+console.log("Fetched faces data: ", facesData);

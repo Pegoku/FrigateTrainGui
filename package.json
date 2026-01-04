@@ -6,5 +6,8 @@
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "follow-redirects": "^1.15.11"
   }
 }
