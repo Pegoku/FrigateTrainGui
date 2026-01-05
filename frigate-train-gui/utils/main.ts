@@ -1,10 +1,6 @@
-// type FaceData = {
-  // 
-// }
+import type { FacesMap } from "@/types";
 
-type FacesMap = Record<string, string[]>;
-
-export async function getFaceData(personName?: string) {
+export async function getFaceData() {
   
   const FRIGATE_URL = process.env.FRIGATE_URL || "";
   var FRIGATE_TOKEN = process.env.FRIGATE_TOKEN || "";
@@ -44,9 +40,9 @@ export async function getFaceData(personName?: string) {
     },
   });
   var facesData: FacesMap = await facesFetch.json()
-  if (!personName) {
-    return facesData;
-  }
+  // if (!personName) {
+  return facesData;
+  // }
 
-  return facesData[personName];
+  // return facesData[personName];
 }

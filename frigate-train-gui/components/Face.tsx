@@ -6,10 +6,10 @@ interface FaceProps{
 
 export default function Face({img, name, percent}: FaceProps) {
     return (
-        <div className="m-4 p-4 w-32 bg-zinc-900 rounded-lg">
-            <img src={img} alt={name} className="size-44"/>
+        <div className="m-4 p-4 w-32 bg-zinc-900 rounded-lg inline-block">
+            <img src={img} alt={name} className="w-44 h-44 blur-xl"/>
             <div>
-                <h3>{name}</h3>
+                <h3 className="blur">{name}</h3>
                 <p>{percent}%</p>
             </div>
         </div>
