@@ -1,12 +1,18 @@
 import Image from "next/image";
 import Face from "@/components/Face";
 import { main } from "bun";
+import { getFaceData } from "@/utils/main";
 
-export default function Home() {
+export default async function Home() {
+  const faceName = "train";
+  const faces = await getFaceData(faceName);
+  console.log(faces);
   return (
     <main>
-      <Face img="https://placehold.co/400x400" name="John" percent={75}/>
-
+      {faces.map((face) => {
+        const faceData: [number, string, number, string, string] = face.split("-");
+        return <Face img={process.env.FRIGATE_URL + "/clips/faces/" + faceName + "/" + face+"?token="+process.env.FRIGATE_TOKEN} name={faceData[4]} percent={75}/>;
+      })}
 
     </main>
 

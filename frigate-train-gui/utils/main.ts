@@ -44,6 +44,9 @@ export async function getFaceData(personName?: string) {
     },
   });
   var facesData: FacesMap = await facesFetch.json()
+  if (!personName) {
+    return facesData;
+  }
 
-  console.log("Fetched faces data: ", facesData[personName]);
+  return facesData[personName];
 }
