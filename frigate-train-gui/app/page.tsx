@@ -6,7 +6,7 @@ import type  { FacesMap, FaceData} from "@/types";
 
 export default async function Home() {
   const faceName = "train";
-  const faces: string[] = (await getFaceData())[faceName];
+  const faces: string[] = (await getFaceData())[faceName].sort().reverse();
   console.log(faces);
   return (
     <main>
@@ -15,6 +15,7 @@ export default async function Home() {
           face.split("-");
         return (
           <Face
+            key={face}
             img={`/api/face-image?faceName=${faceName}&face=${face}`}
             name={faceData[3]}
             percent={parseFloat(faceData[4].split(".webp")[0]) * 100}
