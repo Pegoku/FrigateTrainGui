@@ -8,15 +8,27 @@ export default async function Home() {
   const faceName = "train";
   const faces: string[] = (await getFaceData())[faceName].sort().reverse();
   console.log(faces);
+
+  // group by timestamp
+  const groupedFaces: Record<string, string[]> = {};
+  for (const face of faces) {
+      const timestamp: string = face.split("-")[0] as string;
+      if (!groupedFaces[timestamp]) {
+          groupedFaces[timestamp] = [];
+      }
+      groupedFaces[timestamp].push(face);
+  }
+
   return (
     <main>
       {faces.map((face) => {
         const faceData: FaceData =
-          face.split("-");
+          face.split("-") as FaceData;
         return (
           <Face
             key={face}
             img={`/api/face-image?faceName=${faceName}&face=${face}`}
+            timestamp={faceData[0]}
             name={faceData[3]}
             percent={parseFloat(faceData[4].split(".webp")[0]) * 100}
           />
