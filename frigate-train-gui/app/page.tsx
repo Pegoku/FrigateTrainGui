@@ -21,19 +21,23 @@ export default async function Home() {
 
   return (
     <main>
-      {faces.map((face) => {
-        const faceData: FaceData =
-          face.split("-") as FaceData;
-        return (
-          <Face
-            key={face}
-            img={`/api/face-image?faceName=${faceName}&face=${face}`}
-            timestamp={faceData[0]}
-            name={faceData[3]}
-            percent={parseFloat(faceData[4].split(".webp")[0]) * 100}
-          />
-        );
-      })}
+      {Object.entries(groupedFaces).map(([timestamp, faceList]) => (
+        <div key={timestamp} className="m-4 p-4 w-32 bg-zinc-900 rounded-lg inline-block">
+        {faceList.map((face) => {
+          const faceData: FaceData =
+            face.split("-") as FaceData;
+          return (
+            <Face
+              key={face}
+              img={`/api/face-image?faceName=${faceName}&face=${face}`}
+              timestamp={faceData[0]}
+              name={faceData[3]}
+              percent={parseFloat(faceData[4].split(".webp")[0]) * 100}
+            />
+          );
+        })}
+        </div>
+      ))}
     </main>
   );
 }
