@@ -10,15 +10,16 @@ export default async function Home() {
   return (
     <main>
       {faces.map((face) => {
-        const faceData: [number, string, number, string, string] = face.split("-");
-        return <Face img={process.env.FRIGATE_URL + "/clips/faces/" + faceName + "/" + face+"?token="+process.env.FRIGATE_TOKEN} name={faceData[4]} percent={75}/>;
+        const faceData: [number, string, number, string, string] =
+          face.split("-");
+        return (
+          <Face
+            img={`/api/face-image?faceName=${faceName}&face=${face}`}
+            name={faceData[4]}
+            percent={75}
+          />
+        );
       })}
-
     </main>
-
-
-
-
-
   );
 }
