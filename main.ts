@@ -1,5 +1,5 @@
 const FRIGATE_URL = process.env.FRIGATE_URL || "";
-const FRIGATE_TOKEN = process.env.FRIGATE_TOKEN || "";
+var FRIGATE_TOKEN = process.env.FRIGATE_TOKEN || "";
 
 if (!FRIGATE_TOKEN) {
   const FRIGATE_USERNAME = process.env.FRIGATE_USERNAME || "";
@@ -25,13 +25,14 @@ if (!FRIGATE_TOKEN) {
   const cookieParts = cookiePart?.split("=") || [];
   process.env.FRIGATE_TOKEN = cookieParts[1] || "";
   console.log("Logged in successfully: " + process.env.FRIGATE_TOKEN);
+  FRIGATE_TOKEN = process.env.FRIGATE_TOKEN;
 }
 
 var facesFetch = await fetch(FRIGATE_URL + "/api/faces", {
   method: "GET",
   headers: {
     Accept: "application/json",
-    Authorization: "Bearer " + process.env.FRIGATE_TOKEN,
+    Authorization: "Bearer " + FRIGATE_TOKEN,
   },
 });
 var facesData = await facesFetch.text()
