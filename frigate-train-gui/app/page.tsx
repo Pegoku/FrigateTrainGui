@@ -11,12 +11,19 @@ export default async function Home() {
 
   // group by timestamp
   const groupedFaces: Record<string, string[]> = {};
+  const timestamps: string[] = [];
   for (const face of faces) {
       const timestamp: string = face.split("-")[0] as string;
       if (!groupedFaces[timestamp]) {
           groupedFaces[timestamp] = [];
+          timestamps.push(timestamp);
       }
       groupedFaces[timestamp].push(face);
+  }
+  for (const ts of timestamps) {
+      const names = groupedFaces[ts].map((face) => face.split("-")[3]);
+      console.log(`Timestamp: ${ts}, Names: ${names.join(", ")}`);
+      
   }
 
   return (
@@ -31,7 +38,7 @@ export default async function Home() {
               key={face}
               img={`/api/face-image?faceName=${faceName}&face=${face}`}
               name={faceData[3]}
-              percent={parseFloat(faceData[4].split(".webp")[0]) * 100}
+              percent={((parseFloat(faceData[4].split(".webp")[0]) * 100).toFixed(0) as unknown) as number}
             />
           );
         })}
