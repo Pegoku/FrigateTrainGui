@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Face from "@/components/Face";
+import Header from "@/components/Header"
 import { main } from "bun";
 import { getFaceData } from "@/utils/main";
 import type { FacesMap, FaceData } from "@/types";
@@ -62,13 +63,17 @@ export default async function Home() {
   }
 
   return (
+
     <main>
+
+      <Header />
+
       {Object.entries(groupedFaces).map(([timestamp, faceList]) => (
         <div
           key={timestamp}
           className="m-1 p-2 bg-zinc-800 rounded-lg inline-block"
         >
-          <h3 className="mb-1 text-lg capitalize">
+          <h3 className="mb-1  capitalize">
             Person: {maxName[timestamp]}{" "}
             {maxName[timestamp] != "unknown"
               ? "(" + percentMap[timestamp] + "%)"
