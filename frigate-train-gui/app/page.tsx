@@ -35,28 +35,30 @@ export default async function Home() {
     const maxCount = Math.max(...Object.values(names), 0);
     maxName[ts] = Object.entries(names)
       .filter(([, count]) => count == maxCount)
-      .map(([name]) => name)[0];
+      .map(([name]) => name)
+      .sort()[0];
 
     let maxPercent = 0;
     let faceNum = 0;
-    for (const pc of groupedFaces[ts]
-      .map((face) => face.split("-")[3] == maxName[ts] ? parseFloat(face.split("-")[4].split(".webp")[0])* 100: NaN)
-    ){
-        if (!Number.isNaN(pc)){
-          faceNum +=1;
-          maxPercent += pc;
-          console.log(pc);
-        }
-
+    for (const pc of groupedFaces[ts].map((face) =>
+      face.split("-")[3] == maxName[ts]
+        ? parseFloat(face.split("-")[4].split(".webp")[0]) * 100
+        : NaN
+    )) {
+      if (!Number.isNaN(pc)) {
+        faceNum += 1;
+        maxPercent += pc;
+        console.log(pc);
       }
-      maxPercent = parseInt((maxPercent / faceNum).toFixed(0))
+    }
+    maxPercent = parseInt((maxPercent / faceNum).toFixed(0));
 
     percentMap[ts] = maxPercent;
-      console.log(
-        `Timestamp: ${ts}, Names: ${JSON.stringify(names)}, Max name: ${
-          maxName[ts]
-        }, Max count: ${maxCount}, Max percent: ${maxPercent}, Face num: ${faceNum}`
-      );
+    console.log(
+      `Timestamp: ${ts}, Names: ${JSON.stringify(names)}, Max name: ${
+        maxName[ts]
+      }, Max count: ${maxCount}, Max percent: ${maxPercent}, Face num: ${faceNum}`
+    );
   }
 
   return (
@@ -68,7 +70,9 @@ export default async function Home() {
         >
           <h3 className="mb-1 text-lg capitalize">
             Person: {maxName[timestamp]}{" "}
-            {maxName[timestamp] != "unknown" ? "(" +percentMap[timestamp] + "%)" : ""}
+            {maxName[timestamp] != "unknown"
+              ? "(" + percentMap[timestamp] + "%)"
+              : ""}
           </h3>
           {faceList.map((face) => {
             const faceData: FaceData = face.split("-") as FaceData;
