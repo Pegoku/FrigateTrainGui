@@ -12,13 +12,12 @@ export default async function Home() {
   // group by timestamp
   const groupedFaces: Record<string, string[]> = {};
   const maxName: Record<string, string> = {};
-  const percentMap: Record<string, number[]> = {};
+  const percentMap: Record<string, number> = {};
   const timestamps: string[] = [];
   for (const face of faces) {
     const timestamp: string = face.split("-")[0] as string;
     if (!groupedFaces[timestamp]) {
       groupedFaces[timestamp] = [];
-      percentMap[timestamp] = [];
       timestamps.push(timestamp);
     }
     groupedFaces[timestamp].push(face);
@@ -38,18 +37,25 @@ export default async function Home() {
       .filter(([, count]) => count == maxCount)
       .map(([name]) => name)[0];
 
-    const maxPercent = 0;
-    for (const face of groupedFaces[ts]
-      .map((face) => face.split("-")[4].split(".webp")[0] * 100)
+    let maxPercent = 0;
+    let faceNum = 0;
+    for (const pc of groupedFaces[ts]
+      .map((face) => face.split("-")[3] == maxName[ts] ? parseFloat(face.split("-")[4].split(".webp")[0])* 100: NaN)
     ){
-
-        console.log(face);
+        if (!Number.isNaN(pc)){
+          faceNum +=1;
+          maxPercent += pc;
+          console.log(pc);
+        }
 
       }
+      maxPercent = parseInt((maxPercent / faceNum).toFixed(0))
+
+    percentMap[ts] = maxPercent;
       console.log(
         `Timestamp: ${ts}, Names: ${JSON.stringify(names)}, Max name: ${
           maxName[ts]
-        }, Max count: ${maxCount}`
+        }, Max count: ${maxCount}, Max percent: ${maxPercent}, Face num: ${faceNum}`
       );
   }
 
@@ -58,11 +64,11 @@ export default async function Home() {
       {Object.entries(groupedFaces).map(([timestamp, faceList]) => (
         <div
           key={timestamp}
-          className="m-1 p-2 bg-zinc-900 rounded-lg inline-block"
+          className="m-1 p-2 bg-zinc-800 rounded-lg inline-block"
         >
-          <h3 className="mb-1 font-bold blur ">
+          <h3 className="mb-1 text-lg capitalize">
             Person: {maxName[timestamp]}{" "}
-            {maxName[timestamp] != "unknown" ? parseFloat(faceList) : ""}
+            {maxName[timestamp] != "unknown" ? "(" +percentMap[timestamp] + "%)" : ""}
           </h3>
           {faceList.map((face) => {
             const faceData: FaceData = face.split("-") as FaceData;
