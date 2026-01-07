@@ -11,11 +11,14 @@ export default async function Home() {
   console.log(faces);
 
   // group by timestamp
+  const facesMap: Record<string, number> = {};
   const groupedFaces: Record<string, string[]> = {};
   const maxName: Record<string, string> = {};
   const percentMap: Record<string, number> = {};
   const timestamps: string[] = [];
   for (const face of faces) {
+    const name: string = face.split("-")[3];
+    facesMap[name] = (facesMap[name] || 0) + 1;
     const timestamp: string = face.split("-")[0] as string;
     if (!groupedFaces[timestamp]) {
       groupedFaces[timestamp] = [];
@@ -66,7 +69,7 @@ export default async function Home() {
 
     <main>
 
-      <Header />
+      <Header faces={facesMap} />
 
       {Object.entries(groupedFaces).map(([timestamp, faceList]) => (
         <div

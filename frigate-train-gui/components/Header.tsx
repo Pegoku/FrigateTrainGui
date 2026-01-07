@@ -2,10 +2,10 @@ import { DropdownMenu, Tooltip } from "radix-ui";
 
 
 interface HeaderProps {
-    faces: Record<string, number>[];
+    faces: Record<string, number>;
 }
 
-export default function Header() {
+export default function Header({ faces }: HeaderProps) {
     return (
         <header>
             <DropdownMenu.Root>
@@ -20,12 +20,16 @@ export default function Header() {
                         <DropdownMenu.Item>
                             Hello World
                         </DropdownMenu.Item>
-                        <DropdownMenu.Separator className="border-zinc-700"/>
-                        <DropdownMenu.Label className="text-zinc-400 mb-2">label</DropdownMenu.Label>
-                        
-                        <DropdownMenu.Item>
-                            Hello World
-                        </DropdownMenu.Item>
+                        <DropdownMenu.Separator className="my-2 h-px w-full bg-zinc-700" />
+                        <DropdownMenu.Label className="text-zinc-400 mb-2 text-sm">Collections</DropdownMenu.Label>
+                        {
+                            Object.entries(faces).map(([name, count]) => (
+                                <DropdownMenu.Item key={name}>
+                                    {name}: {count}
+                                </DropdownMenu.Item>
+                            ))
+
+                        }
                     </DropdownMenu.Content>
                 </DropdownMenu.Portal>
             </DropdownMenu.Root>
