@@ -5,20 +5,34 @@ import { main } from "bun";
 import { getFaceData } from "@/utils/main";
 import type { FacesMap, FaceData } from "@/types";
 
+async function getFaceCount(faceData: FacesMap): Promise<Record<string, number>> {
+  const faceCount: Record<string, number> = {};
+  for (const [name, faces] of Object.entries(faceData)){
+    faceCount[name] = faces.length;
+  }
+  return faceCount;
+}
+
 export default async function Home() {
+  const faceData: FacesMap = await getFaceData();
+
   const faceName = "train";
-  const faces: string[] = (await getFaceData())[faceName].sort().reverse();
+  const faces: string[] = faceData[faceName].sort().reverse();
   console.log(faces);
 
+
+  const faceCount: Record<string, number> = await getFaceCount(faceData);
+
+
   // group by timestamp
-  const facesMap: Record<string, number> = {};
+  // const facesMap: Record<string, number> = {};
   const groupedFaces: Record<string, string[]> = {};
   const maxName: Record<string, string> = {};
   const percentMap: Record<string, number> = {};
   const timestamps: string[] = [];
+
   for (const face of faces) {
-    const name: string = face.split("-")[3];
-    facesMap[name] = (facesMap[name] || 0) + 1;
+    // const name: string = face.split("-")[3];
     const timestamp: string = face.split("-")[0] as string;
     if (!groupedFaces[timestamp]) {
       groupedFaces[timestamp] = [];
@@ -69,7 +83,7 @@ export default async function Home() {
 
     <main>
 
-      <Header faces={facesMap} />
+      <Header faces={faceMap} />
 
       {Object.entries(groupedFaces).map(([timestamp, faceList]) => (
         <div
