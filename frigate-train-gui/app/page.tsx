@@ -83,7 +83,7 @@ export default async function Home() {
 
     <main>
 
-      <Header faces={faceMap} />
+      <Header faces={faceCount} />
 
       {Object.entries(groupedFaces).map(([timestamp, faceList]) => (
         <div
