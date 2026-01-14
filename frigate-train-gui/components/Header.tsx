@@ -25,7 +25,7 @@ export default function Header({ faces }: HeaderProps) {
                         {
                             Object.entries(faces).map(([name, count]) => (
                                 name !== "train" && (
-                                    <DropdownMenu.Item key={name} className="h-9 flex items-center justify-between min-w-32">
+                                    <DropdownMenu.Item key={name} className="h-9 flex items-center justify-between min-w-50">
                                         <span className="capitalize">{name}</span>
                                         <span className="text-xs text-zinc-400"> ({count})</span>
                                     </DropdownMenu.Item>
