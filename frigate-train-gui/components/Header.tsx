@@ -16,7 +16,7 @@ export default function Header({ faces }: HeaderProps) {
                 </DropdownMenu.Trigger>
 
                 <DropdownMenu.Portal>
-                    <DropdownMenu.Content className="bg-zinc-800 p-2 rounded-lg">
+                    <DropdownMenu.Content className="bg-zinc-800 p-2 rounded-lg" align="start">
                         <DropdownMenu.Item>
                             Train: {faces["train"] || 0}
                         </DropdownMenu.Item>
@@ -25,7 +25,7 @@ export default function Header({ faces }: HeaderProps) {
                         {
                             Object.entries(faces).map(([name, count]) => (
                                 name !== "train" && (
-                                    <DropdownMenu.Item key={name} className="">
+                                    <DropdownMenu.Item key={name} className="h-9 flex items-center justify-between min-w-32">
                                         <span className="capitalize">{name}</span>
                                         <span className="text-xs text-zinc-400"> ({count})</span>
                                     </DropdownMenu.Item>
