@@ -16,7 +16,7 @@ export default function Header({ faces }: HeaderProps) {
                 </DropdownMenu.Trigger>
 
                 <DropdownMenu.Portal>
-                    <DropdownMenu.Content className="bg-zinc-800 p-2 rounded-lg mt-1" align="start">
+                    <DropdownMenu.Content className="bg-zinc-800 p-2 rounded-lg mt-1 border-2 border-zinc-700" align="start">
                         <DropdownMenu.Item>
                             Train: {faces["train"] || 0}
                         </DropdownMenu.Item>
