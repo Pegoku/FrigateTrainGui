@@ -1,13 +1,15 @@
 import Image from "next/image";
 import Face from "@/components/Face";
-import Header from "@/components/Header"
+import Header from "@/components/Header";
 import { main } from "bun";
 import { getFaceData } from "@/utils/main";
 import type { FacesMap, FaceData } from "@/types";
 
-async function getFaceCount(faceData: FacesMap): Promise<Record<string, number>> {
+async function getFaceCount(
+  faceData: FacesMap
+): Promise<Record<string, number>> {
   const faceCount: Record<string, number> = {};
-  for (const [name, faces] of Object.entries(faceData)){
+  for (const [name, faces] of Object.entries(faceData)) {
     faceCount[name] = faces.length;
   }
   return faceCount;
@@ -20,9 +22,7 @@ export default async function Home() {
   const faces: string[] = faceData[faceName].sort().reverse();
   console.log(faces);
 
-
   const faceCount: Record<string, number> = await getFaceCount(faceData);
-
 
   // group by timestamp
   // const facesMap: Record<string, number> = {};
@@ -80,39 +80,38 @@ export default async function Home() {
   }
 
   return (
-
-    <main>
-
+    <>
       <Header faces={faceCount} />
-
-      {Object.entries(groupedFaces).map(([timestamp, faceList]) => (
-        <div
-          key={timestamp}
-          className="m-1 p-2 bg-zinc-800 rounded-lg inline-block"
-        >
-          <h3 className="mb-1  capitalize">
-            Person: {maxName[timestamp]}{" "}
-            {maxName[timestamp] != "unknown"
-              ? "(" + percentMap[timestamp] + "%)"
-              : ""}
-          </h3>
-          {faceList.map((face) => {
-            const faceData: FaceData = face.split("-") as FaceData;
-            return (
-              <Face
-                key={face}
-                img={`/api/face-image?faceName=${faceName}&face=${face}`}
-                name={faceData[3]}
-                percent={
-                  (parseFloat(faceData[4].split(".webp")[0]) * 100).toFixed(
-                    0
-                  ) as unknown as number
-                }
-              />
-            );
-          })}
-        </div>
-      ))}
-    </main>
+      <main>
+        {Object.entries(groupedFaces).map(([timestamp, faceList]) => (
+          <div
+            key={timestamp}
+            className="m-1 p-2 bg-zinc-800 rounded-lg inline-block"
+          >
+            <h3 className="mb-1 capitalize blur">
+              Person: {maxName[timestamp]}{" "}
+              {maxName[timestamp] != "unknown"
+                ? "(" + percentMap[timestamp] + "%)"
+                : ""}
+            </h3>
+            {faceList.map((face) => {
+              const faceData: FaceData = face.split("-") as FaceData;
+              return (
+                <Face
+                  key={face}
+                  img={`/api/face-image?faceName=${faceName}&face=${face}`}
+                  name={faceData[3]}
+                  percent={
+                    (parseFloat(faceData[4].split(".webp")[0]) * 100).toFixed(
+                      0
+                    ) as unknown as number
+                  }
+                />
+              );
+            })}
+          </div>
+        ))}
+      </main>
+    </>
   );
 }

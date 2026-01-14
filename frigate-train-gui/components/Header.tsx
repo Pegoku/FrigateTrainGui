@@ -18,15 +18,18 @@ export default function Header({ faces }: HeaderProps) {
                 <DropdownMenu.Portal>
                     <DropdownMenu.Content className="bg-zinc-800 p-2 rounded-lg">
                         <DropdownMenu.Item>
-                            Hello World
+                            Train: {faces["train"] || 0}
                         </DropdownMenu.Item>
                         <DropdownMenu.Separator className="my-2 h-px w-full bg-zinc-700" />
                         <DropdownMenu.Label className="text-zinc-400 mb-2 text-sm">Collections</DropdownMenu.Label>
                         {
                             Object.entries(faces).map(([name, count]) => (
-                                <DropdownMenu.Item key={name}>
-                                    {name}: {count}
-                                </DropdownMenu.Item>
+                                name !== "train" && (
+                                    <DropdownMenu.Item key={name} className="">
+                                        <span className="capitalize">{name}</span>
+                                        <span className="text-xs text-zinc-400"> ({count})</span>
+                                    </DropdownMenu.Item>
+                                )
                             ))
 
                         }
