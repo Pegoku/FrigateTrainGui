@@ -3,15 +3,16 @@ import { DropdownMenu, Tooltip } from "radix-ui";
 
 interface HeaderProps {
     faces: Record<string, number>;
+    selectedFace: string;
 }
 
-export default function Header({ faces }: HeaderProps) {
+export default function Header({ faces, selectedFace="train" }: HeaderProps) {
     return (
         <header>
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
-                    <button className="p-2 m-2 bg-zinc-800 rounded-lg">
-                        Selected Face
+                    <button className="p-2 m-2 bg-zinc-800 rounded-lg capitalize">
+                        {selectedFace}: {faces[selectedFace] || 0}
                         </button>
                 </DropdownMenu.Trigger>
 
