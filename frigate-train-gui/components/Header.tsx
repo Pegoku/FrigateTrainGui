@@ -4,12 +4,13 @@ import { useState } from "react";
 
 interface HeaderProps {
     faces: Record<string, number>;
-    // selectedFace: string;
+    selectedFace: string;
+    setSelectedFace: (face: string) => void;
 }
 
-export default function Header({ faces}: HeaderProps) {
+export default function Header({ faces, selectedFace, setSelectedFace }: HeaderProps) {
 
-    const [selectedFace, setSelectedFace] = useState("train");
+    // const [selectedFace, setSelectedFace] = useState("train");
     return (
         <header>
             <DropdownMenu.Root>
