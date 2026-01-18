@@ -1,3 +1,5 @@
+'use server';
+
 import type { FacesMap } from "@/types";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { jwtDecode } from "jwt-decode";
@@ -89,7 +91,7 @@ export async function getFaceData() {
   // return facesData[personName];
 }
 
-export function classifyFace(file: string, personName: string) {
+export async function classifyFace(file: string, personName: string) {
 
   const FRIGATE_URL:string = process.env.FRIGATE_URL || "";
   const FRIGATE_TOKEN:string = getSavedToken() || process.env.FRIGATE_TOKEN || "";

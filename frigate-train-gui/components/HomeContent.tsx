@@ -9,6 +9,7 @@ import { FaceData as TrainFaceData, HomeContentProps, FaceData } from "@/types";
 export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
   const [selectedFace, setSelectedFace] = useState("train");
 
+  const faceNames: string[] = Object.keys(faceData);
   const faces: string[] = faceData[selectedFace].sort().reverse();
   console.log(faces);
   // group by timestamp
@@ -101,6 +102,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
                     img={`/api/face-image?faceName=${selectedFace}&face=${face}`}
                     name={name}
                     percent={confidence}
+                    faceNames={faceNames}
                   />
                 );
               })}
