@@ -10,8 +10,9 @@ export default function Face({img, name, percent}: FaceProps) {
 
             <img src={img} alt={name} className="w-44 h-44 rounded-lg blur"/>
             <div>
+                
+                {percent !== -1 ? <p>{percent}%</p>: <br />}
                 <h3 className="blur">{name}</h3>
-                <p>{percent}%</p>
             </div>
 
         </div>

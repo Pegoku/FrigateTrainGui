@@ -75,37 +75,59 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
         setSelectedFace={setSelectedFace}
       />
       <main>
-        {Object.entries(groupedFaces).map(([timestamp, faceList]) => (
-          <div
-            key={timestamp}
-            className="m-1 p-2 bg-zinc-800 rounded-lg inline-block"
-          >
-            <h3 className="mb-1 capitalize blur">
-              Person: {maxName[timestamp]}{" "}
-              {maxName[timestamp] != "unknown"
-                ? "(" + percentMap[timestamp] + "%)"
-                : ""}
-            </h3>
-            {faceList.map((face) => {
-              const parts = face.split("-");
-              const name = selectedFace === "train" ? parts[3] : parts[0];
-							const confidence =
-								selectedFace === "train"
-									? (parseFloat(parts[4].split(".webp")[0]) * 100).toFixed(0) as unknown as number
-									: -1;
+        {Object.entries(groupedFaces).map(([timestamp, faceList]) =>
+          selectedFace === "train" ? (
+            <div
+              key={timestamp}
+              className="m-1 p-2 bg-zinc-800 rounded-lg inline-block"
+            >
+              <h3 className="mb-1 capitalize blur">
+                Person: {maxName[timestamp]}{" "}
+                {maxName[timestamp] != "unknown"
+                  ? "(" + percentMap[timestamp] + "%)"
+                  : ""}
+              </h3>
 
-              return(
-                <Face
-                  key={face}
-                  img={`/api/face-image?faceName=${selectedFace}&face=${face}`}
-                  name={name}
-                  percent={confidence}
-                />
-							);
-					
-            })}
-          </div>
-        ))}
+              {faceList.map((face) => {
+                const parts = face.split("-");
+                const name = parts[3];
+                const confidence = (
+                  parseFloat(parts[4].split(".webp")[0]) * 100
+                ).toFixed(0) as unknown as number;
+
+                return (
+                  <Face
+                    key={face}
+                    img={`/api/face-image?faceName=${selectedFace}&face=${face}`}
+                    name={name}
+                    percent={confidence}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <div>
+              {faceList.map((face) => {
+                const parts = face.split("-");
+                const name = parts[0];
+                const confidence = -1;
+
+                return (
+                  <div className="m-1 p-2 bg-zinc-800 rounded-lg inline-block">
+
+                  <Face
+                    key={face}
+                    img={`/api/face-image?faceName=${selectedFace}&face=${face}`}
+                    name={name}
+                    percent={confidence}
+                  />
+
+                  </div>
+                );
+              })}
+            </div>
+          ),
+        )}
       </main>
     </>
   );
