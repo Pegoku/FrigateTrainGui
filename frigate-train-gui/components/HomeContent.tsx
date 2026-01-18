@@ -122,6 +122,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
                     img={`/api/face-image?faceName=${selectedFace}&face=${face}`}
                     name={name}
                     percent={confidence}
+                    faceNames={faceNames}
                   />
 
                   </div>
