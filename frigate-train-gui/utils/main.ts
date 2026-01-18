@@ -21,7 +21,8 @@ function saveToken(token: string): void {
   }
 }
 
-async function updateToken(FRIGATE_URL: string): Promise<void> {
+async function updateToken(): Promise<void> {
+    const FRIGATE_URL:string = process.env.FRIGATE_URL || "";
     const FRIGATE_USERNAME = process.env.FRIGATE_USERNAME || "";
     const FRIGATE_PASSWORD = process.env.FRIGATE_PASSWORD || "";
 
@@ -69,7 +70,7 @@ export async function getFaceData() {
 
   if (!isTokenValid) {
     console.log("No valid token found, updating token...");
-    await updateToken(FRIGATE_URL);
+    await updateToken();
     FRIGATE_TOKEN = process.env.FRIGATE_TOKEN || "";
   }
 
@@ -88,7 +89,9 @@ export async function getFaceData() {
   // return facesData[personName];
 }
 
-// export function classifyFace(file: string, personName: string) {
+export function classifyFace(file: string, personName: string) {
 
+  const FRIGATE_URL:string = process.env.FRIGATE_URL || "";
   // 'https://cam.pegoku.com/api/faces/train/Jose/classify' \
   // --data-raw '{"training_file":"1768752134.659756-8fzlru-1768752136.638627-Jose-1.0.webp"}'
+}
