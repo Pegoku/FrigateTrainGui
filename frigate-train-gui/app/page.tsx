@@ -19,72 +19,13 @@ async function getFaceCount(
 export default async function Home() {
   const faceData: FacesMap = await getFaceData();
 
-  const faceName = "train";
-  const faces: string[] = faceData[faceName].sort().reverse();
-  console.log(faces);
 
   const faceCount: Record<string, number> = await getFaceCount(faceData);
 
-  // group by timestamp
-  // const facesMap: Record<string, number> = {};
-  const groupedFaces: Record<string, string[]> = {};
-  const maxName: Record<string, string> = {};
-  const percentMap: Record<string, number> = {};
-  const timestamps: string[] = [];
-
-  for (const face of faces) {
-    // const name: string = face.split("-")[3];
-    const timestamp: string = face.split("-")[0] as string;
-    if (!groupedFaces[timestamp]) {
-      groupedFaces[timestamp] = [];
-      timestamps.push(timestamp);
-    }
-    groupedFaces[timestamp].push(face);
-  }
-  for (const ts of timestamps) {
-    // const names = groupedFaces[ts].map((face) => face.split("-")[3]);
-    const names: Record<string, number> = {};
-    for (const face of groupedFaces[ts].map((face) => face.split("-")[3])) {
-      if (!names[face]) {
-        names[face] = 0;
-      }
-      names[face] += 1;
-    }
-
-    const maxCount = Math.max(...Object.values(names), 0);
-    maxName[ts] = Object.entries(names)
-      .filter(([, count]) => count == maxCount)
-      .map(([name]) => name)
-      .sort()[0];
-
-    let maxPercent = 0;
-    let faceNum = 0;
-    for (const pc of groupedFaces[ts].map((face) =>
-      face.split("-")[3] == maxName[ts]
-        ? parseFloat(face.split("-")[4].split(".webp")[0]) * 100
-        : NaN
-    )) {
-      if (!Number.isNaN(pc)) {
-        faceNum += 1;
-        maxPercent += pc;
-        console.log(pc);
-      }
-    }
-    maxPercent = parseInt((maxPercent / faceNum).toFixed(0));
-
-    percentMap[ts] = maxPercent;
-    console.log(
-      `Timestamp: ${ts}, Names: ${JSON.stringify(names)}, Max name: ${
-        maxName[ts]
-      }, Max count: ${maxCount}, Max percent: ${maxPercent}, Face num: ${faceNum}`
-    );
-  }
 
   return (
     <HomeContent
-      groupedFaces={groupedFaces}
-      maxName={maxName}
-      percentMap={percentMap}
+      faceData={faceData}
       faceCount={faceCount}
     />
   );
