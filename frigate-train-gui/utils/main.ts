@@ -92,6 +92,24 @@ export async function getFaceData() {
 export function classifyFace(file: string, personName: string) {
 
   const FRIGATE_URL:string = process.env.FRIGATE_URL || "";
-  // 'https://cam.pegoku.com/api/faces/train/Jose/classify' \
-  // --data-raw '{"training_file":"1768752134.659756-8fzlru-1768752136.638627-Jose-1.0.webp"}'
+  const FRIGATE_TOKEN:string = getSavedToken() || process.env.FRIGATE_TOKEN || "";
+
+  fetch(FRIGATE_URL + "/api/faces/train/" + encodeURIComponent(personName) + "/classify", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + FRIGATE_TOKEN,
+    },
+    body: JSON.stringify({
+      training_file: file
+    }),
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error("Failed to classify face: " + response.statusText);
+    }
+    return response.json();
+  }).catch(error => {
+    console.error("Error classifying face:", error);
+  });
 }
