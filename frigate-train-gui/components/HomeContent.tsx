@@ -4,9 +4,9 @@
 import { useState } from "react";
 import Header from "./Header";
 import Face from "./Face";
-import { FaceData as TrainFaceData, HomeContentProps, FaceData} from "@/types";
+import { FaceData as TrainFaceData, HomeContentProps, FaceData } from "@/types";
 
-export default function HomeContent({ faceData, faceCount}: HomeContentProps ) {
+export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
   const [selectedFace, setSelectedFace] = useState("train");
 
   const faces: string[] = faceData[selectedFace].sort().reverse();
@@ -48,7 +48,7 @@ export default function HomeContent({ faceData, faceCount}: HomeContentProps ) {
     for (const pc of groupedFaces[ts].map((face) =>
       face.split("-")[3] == maxName[ts]
         ? parseFloat(face.split("-")[4].split(".webp")[0]) * 100
-        : NaN
+        : NaN,
     )) {
       if (!Number.isNaN(pc)) {
         faceNum += 1;
@@ -62,14 +62,18 @@ export default function HomeContent({ faceData, faceCount}: HomeContentProps ) {
     console.log(
       `Timestamp: ${ts}, Names: ${JSON.stringify(names)}, Max name: ${
         maxName[ts]
-      }, Max count: ${maxCount}, Max percent: ${maxPercent}, Face num: ${faceNum}`
+      }, Max count: ${maxCount}, Max percent: ${maxPercent}, Face num: ${faceNum}`,
     );
   }
   console.log(groupedFaces);
 
   return (
     <>
-      <Header faces={faceCount} selectedFace={selectedFace} setSelectedFace={setSelectedFace} />
+      <Header
+        faces={faceCount}
+        selectedFace={selectedFace}
+        setSelectedFace={setSelectedFace}
+      />
       <main>
         {Object.entries(groupedFaces).map(([timestamp, faceList]) => (
           <div
@@ -83,32 +87,22 @@ export default function HomeContent({ faceData, faceCount}: HomeContentProps ) {
                 : ""}
             </h3>
             {faceList.map((face) => {
-              const trainFaceData: TrainFaceData = face.split("-") as TrainFaceData;
-              const faceData: FaceData = face.split("-") as FaceData;
+              const parts = face.split("-");
+              const name = selectedFace === "train" ? parts[3] : parts[0];
+							const confidence =
+								selectedFace === "train"
+									? (parseFloat(parts[4].split(".webp")[0]) * 100).toFixed(0) as unknown as number
+									: -1;
 
-              return (
-
-              selectedFace === "train" ? (
+              return(
                 <Face
                   key={face}
                   img={`/api/face-image?faceName=${selectedFace}&face=${face}`}
-                  name={trainFaceData[3]}
-                  percent={
-                    (parseFloat(trainFaceData[4].split(".webp")[0]) * 100).toFixed(
-                      0,
-                    ) as unknown as number
-                  }
+                  name={name}
+                  percent={confidence}
                 />
-            ) : (
-
-                <Face
-                  key={face}
-                  img={`/api/face-image?faceName=${selectedFace}&face=${face}`}
-                  name={faceData[0]}
-                  percent={-1}
-                />
-              )
-            )
+							);
+					
             })}
           </div>
         ))}
