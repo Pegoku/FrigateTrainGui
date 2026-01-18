@@ -1,11 +1,27 @@
 import type { FacesMap } from "@/types";
+import { existsSync, readFileSync, writeFileSync } from "fs";
+import { jwtDecode } from "jwt-decode";
 
-export async function getFaceData() {
-  
-  const FRIGATE_URL = process.env.FRIGATE_URL || "";
-  var FRIGATE_TOKEN = process.env.FRIGATE_TOKEN || "";
+function getSavedToken(): string | null {
+  try {
+    if (existsSync(".token-cache")){
+      return readFileSync(".token-cache", "utf-8").trim();
+    }
+  } catch (err) {
+    console.error("Error reading token cache:", err);
+  }
+  return null;
+}
 
-  if (!FRIGATE_TOKEN) {
+function saveToken(token: string): void {
+  try {
+    writeFileSync(".token-cache", token, "utf-8");
+  } catch (err) {
+    console.error("Error writing token cache:", err);
+  }
+}
+
+async function updateToken(FRIGATE_URL: string): Promise<void> {
     const FRIGATE_USERNAME = process.env.FRIGATE_USERNAME || "";
     const FRIGATE_PASSWORD = process.env.FRIGATE_PASSWORD || "";
 
@@ -29,7 +45,32 @@ export async function getFaceData() {
     const cookieParts = cookiePart?.split("=") || [];
     process.env.FRIGATE_TOKEN = cookieParts[1] || "";
     console.log("Logged in successfully: " + process.env.FRIGATE_TOKEN);
-    FRIGATE_TOKEN = process.env.FRIGATE_TOKEN;
+    process.env.FRIGATE_TOKEN;
+    saveToken(process.env.FRIGATE_TOKEN);
+}
+
+export async function getFaceData() {
+  
+  const FRIGATE_URL:string = process.env.FRIGATE_URL || "";
+  let FRIGATE_TOKEN:string = getSavedToken() || process.env.FRIGATE_TOKEN || "";
+
+  let isTokenValid = false;
+  if (FRIGATE_TOKEN) {
+    try {
+      const decodedToken = jwtDecode(FRIGATE_TOKEN);
+      if (decodedToken.exp && decodedToken.exp * 1000 > Date.now()) {
+        console.log("Using cached token, valid until " + new Date(decodedToken.exp * 1000).toLocaleString());
+        isTokenValid = true;
+      }
+    } catch (err) {
+      console.log("Invalid token in cache, updating...");
+    }
+  }
+
+  if (!isTokenValid) {
+    console.log("No valid token found, updating token...");
+    await updateToken(FRIGATE_URL);
+    FRIGATE_TOKEN = process.env.FRIGATE_TOKEN || "";
   }
 
   var facesFetch = await fetch(FRIGATE_URL + "/api/faces", {
@@ -46,3 +87,8 @@ export async function getFaceData() {
 
   // return facesData[personName];
 }
+
+// export function classifyFace(file: string, personName: string) {
+
+  // 'https://cam.pegoku.com/api/faces/train/Jose/classify' \
+  // --data-raw '{"training_file":"1768752134.659756-8fzlru-1768752136.638627-Jose-1.0.webp"}'
