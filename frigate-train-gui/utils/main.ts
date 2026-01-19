@@ -4,6 +4,9 @@ import type { FacesMap } from "@/types";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { jwtDecode } from "jwt-decode";
 
+// Accept self-signed certificates
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 function getSavedToken(): string | null {
   try {
     if (existsSync(".token-cache")){
