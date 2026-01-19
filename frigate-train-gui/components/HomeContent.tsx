@@ -111,6 +111,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
                     percent={confidence}
                     faceNames={faceNames}
                     onClassified={handleRefresh}
+                    selecrtedFace={selectedFace}
                   />
                 );
               })}
