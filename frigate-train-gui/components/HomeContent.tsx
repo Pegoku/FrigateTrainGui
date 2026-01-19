@@ -5,6 +5,7 @@ import { useState } from "react";
 import Header from "./Header";
 import Face from "./Face";
 import { FaceData as TrainFaceData, HomeContentProps, FaceData } from "@/types";
+import { randomInt } from "crypto";
 
 export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
   const [selectedFace, setSelectedFace] = useState("train");
@@ -108,28 +109,23 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
               })}
             </div>
           ) : (
-            <div>
-              {faceList.map((face) => {
-                const parts = face.split("-");
-                const name = parts[0];
-                const confidence = -1;
+            faceList.map((face) => {
+              const parts = face.split("-");
+              const name = parts[0];
+              const confidence = -1;
 
-                return (
-                  <div className="m-1 p-2 bg-zinc-800 rounded-lg inline-block">
-
+              return (
+                <div key={face} className="m-1 p-2 bg-zinc-800 rounded-lg inline-block">
                   <Face
-                    key={face}
                     img={`/api/face-image?faceName=${selectedFace}&face=${face}`}
                     name={name}
                     percent={confidence}
                     faceNames={faceNames}
                   />
-
-                  </div>
-                );
-              })}
-            </div>
-          ),
+                </div>
+              );
+            })
+          )
         )}
       </main>
     </>
