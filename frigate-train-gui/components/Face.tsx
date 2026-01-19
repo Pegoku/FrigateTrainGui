@@ -9,12 +9,13 @@ interface FaceProps{
     percent: number;
     faceNames: string[];
     onClassified?: () => void;
-    selecrtedFace?: string;
+    selectedFace?: string;
+    isSelected?: boolean;
 }
 
-export default function Face({img, name, percent, faceNames, onClassified, selecrtedFace: selectedFace}: FaceProps) {
+export default function Face({img, name, percent, faceNames, onClassified, selectedFace, isSelected}: FaceProps) {
     return (
-        <div className="inline-block mx-1 ">
+        <div className={`inline-block mx-1 ${isSelected ? "border-2 border-red-400 rounded-lg p-2" : ""}`}>
 
             <img src={img} alt={name} className="w-44 h-44 rounded-lg blur"/>
             <div className="columns-2">
