@@ -8,9 +8,10 @@ interface FaceProps{
     name: string;
     percent: number;
     faceNames: string[];
+    onClassified?: () => void;
 }
 
-export default function Face({img, name, percent, faceNames}: FaceProps) {
+export default function Face({img, name, percent, faceNames, onClassified}: FaceProps) {
     return (
         <div className="inline-block mx-1 ">
 
@@ -35,7 +36,10 @@ export default function Face({img, name, percent, faceNames}: FaceProps) {
                             {
                                 faceNames.map((name) => (
                                     name !== "train" && (
-                                        <DropdownMenu.Item onSelect={() => classifyFace(img.split("face=")[1], name)} key={name} className="h-9 flex items-center justify-between min-w-50">
+                                        <DropdownMenu.Item onSelect={async () => {
+                                            await classifyFace(img.split("face=")[1], name);
+                                            onClassified?.();
+                                        }} key={name} className="h-9 flex items-center justify-between min-w-50">
                                             <span className="capitalize">{name}</span>
                                         </DropdownMenu.Item>
                                     )

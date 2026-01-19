@@ -2,6 +2,7 @@
 // https://cam.pegoku.com/clips/faces/train/1768738225.678005-wb4vpn-1768738226.801436-unknown-0.36.webp
 // https://cam.pegoku.com/clips/faces/Jose/Jose-1767451698.756786.webp
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Header from "./Header";
 import Face from "./Face";
 import { FaceData as TrainFaceData, HomeContentProps, FaceData } from "@/types";
@@ -9,7 +10,12 @@ import { randomInt } from "crypto";
 
 export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
   const [selectedFace, setSelectedFace] = useState("train");
-
+  const router = useRouter();
+  
+  const handleRefresh = () => {
+    router.refresh();
+  };
+  
   const faceNames: string[] = Object.keys(faceData);
   const faces: string[] = faceData[selectedFace].sort().reverse();
   console.log(faces);
@@ -104,6 +110,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
                     name={name}
                     percent={confidence}
                     faceNames={faceNames}
+                    onClassified={handleRefresh}
                   />
                 );
               })}
@@ -121,6 +128,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
                     name={name}
                     percent={confidence}
                     faceNames={faceNames}
+                    onClassified={handleRefresh}
                   />
                 </div>
               );
