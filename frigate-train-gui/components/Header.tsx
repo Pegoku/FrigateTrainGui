@@ -26,7 +26,7 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
 
                 <DropdownMenu.Portal>
                     <DropdownMenu.Content className="bg-zinc-800 p-2 rounded-lg mt-1 border-2 border-zinc-700 z-50" align="start">
-                        <DropdownMenu.Item onSelect={() => setSelectedFace("train")} className="h-9 flex items-center justify-between min-w-50">
+                        <DropdownMenu.Item onSelect={() => setSelectedFace("train")} className="h-9 flex items-center justify-between min-w-50 hover:bg-zinc-700">
                             Train: {faces["train"] || 0}
                         </DropdownMenu.Item>
                         <DropdownMenu.Separator className="my-2 h-px w-full bg-zinc-700" />
@@ -34,7 +34,7 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
                         {
                             Object.entries(faces).map(([name, count]) => (
                                 name !== "train" && (
-                                    <DropdownMenu.Item onSelect={() => setSelectedFace(name)} key={name} className="h-9 flex items-center justify-between min-w-50">
+                                    <DropdownMenu.Item onSelect={() => setSelectedFace(name)} key={name} className="h-9 flex items-center justify-between min-w-50 hover:bg-zinc-700">
                                         <span className="capitalize blur">{name}</span>
                                         <span className="text-xs text-zinc-400"> ({count})</span>
                                     </DropdownMenu.Item>
@@ -48,7 +48,7 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
             {selectedFaces && selectedFaces.length > 0 && (
             <DropdownMenu.Root >
                 <DropdownMenu.Trigger asChild>
-                    <button className="p-1 mt-2 hover:bg-zinc-700 rounded-lg">
+                    <button className="bg-zinc-800 p-2 mt-2 hover:bg-zinc-700 rounded-lg">
                         Classify ({selectedFaces.length}) faces
                     </button>
                 </DropdownMenu.Trigger>
@@ -64,7 +64,7 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
                                         classifyFace(face, name);
                                     });
                                     onClassified?.();
-                                }} key={name} className="h-9 flex items-center justify-between min-w-50">
+                                }} key={name} className="h-9 flex items-center justify-between min-w-50 hover:bg-zinc-700">
                                     {/* <DropdownMenu.Item onSelect={async () => {
                                         await classifyFace(img.split("face=")[1], name);
                                         onClassified?.();
