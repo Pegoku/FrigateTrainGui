@@ -10,7 +10,7 @@ import { randomInt } from "crypto";
 
 export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
   const [selectedFace, setSelectedFace] = useState("train");
-  const [selectedFaces, setSelectedFaces] = useState<FaceData[]>([]);
+  const [selectedFaces, setSelectedFaces] = useState<string[]>([]);
   const router = useRouter();
   
   const handleRefresh = () => {
@@ -81,9 +81,11 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
       if (prev.includes(face)) {
         const newSelection = prev.filter(f => f !== face);
         console.log("Deselected face:", face);
+        console.log("Total selected faces:", newSelection);
         return newSelection;
       } else {
         console.log("Selected face:", face);
+        console.log("Total selected faces:", [...prev, face]);
         return [...prev, face];
       }
     })
@@ -95,6 +97,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
         faces={faceCount}
         selectedFace={selectedFace}
         setSelectedFace={setSelectedFace}
+        selectedFaces={selectedFaces}
       />
       <main>
         {Object.entries(groupedFaces).map(([timestamp, faceList]) =>
@@ -126,6 +129,8 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
                     faceNames={faceNames}
                     onClassified={handleRefresh}
                     selectedFace={selectedFace}
+                    onRightClick={() => handleFaceRightClick(face)}
+                    isSelected={selectedFaces.includes(face)}
                   />
                 );
               })}

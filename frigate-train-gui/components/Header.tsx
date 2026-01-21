@@ -6,9 +6,10 @@ interface HeaderProps {
     faces: Record<string, number>;
     selectedFace: string;
     setSelectedFace: (face: string) => void;
+    selectedFaces?: string[];
 }
 
-export default function Header({ faces, selectedFace, setSelectedFace }: HeaderProps) {
+export default function Header({ faces, selectedFace, setSelectedFace, selectedFaces }: HeaderProps) {
 
     // const [selectedFace, setSelectedFace] = useState("train");
     return (
@@ -41,6 +42,11 @@ export default function Header({ faces, selectedFace, setSelectedFace }: HeaderP
                     </DropdownMenu.Content>
                 </DropdownMenu.Portal>
             </DropdownMenu.Root>
+            {selectedFaces && selectedFaces.length > 0 && (
+                <div className="inline-block ml-4 p-2 bg-zinc-700 rounded-lg">
+                    <span className="capitalize">Selected: {selectedFaces.length}</span>
+                </div>
+            )}
         </header>
 
     )

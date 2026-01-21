@@ -10,12 +10,13 @@ interface FaceProps{
     faceNames: string[];
     onClassified?: () => void;
     selectedFace?: string;
+    onRightClick?: () => void;
     isSelected?: boolean;
 }
 
-export default function Face({img, name, percent, faceNames, onClassified, selectedFace, isSelected}: FaceProps) {
+export default function Face({img, name, percent, faceNames, onClassified, selectedFace, onRightClick, isSelected}: FaceProps) {
     return (
-        <div className={`inline-block mx-1 ${isSelected ? "border-2 border-red-400 rounded-lg p-2" : ""}`}>
+        <div className={`inline-block mx-1 p-2 ${isSelected ? "outline-2 outline-red-400 rounded-lg" : ""}`} onContextMenu={(e) => {e.preventDefault(); onRightClick?.()}}>
 
             <img src={img} alt={name} className="w-44 h-44 rounded-lg blur"/>
             <div className="columns-2">
