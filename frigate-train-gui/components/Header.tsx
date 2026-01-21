@@ -53,15 +53,19 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
 
                 <DropdownMenu.Portal>
                     <DropdownMenu.Content className="bg-zinc-800 p-2 rounded-lg mt-1 border-2 border-zinc-700" align="start">
-                        <DropdownMenu.Label className="text-zinc-400 mb-2 text-b">Train face as:</DropdownMenu.Label>
+                        {/* <DropdownMenu.Label className="text-zinc-400 mb-2 text-b">Train face as:</DropdownMenu.Label> */}
                         {
                             Object.entries(faces).map(([name, _]) => name).filter(name => name !== "train").map((name) => (
-                                <DropdownMenu.Item onSelect={ () => console.log("Classifying faces as", name) } key={name} className="h-9 flex items-center justify-between min-w-50">
+                                <DropdownMenu.Item onSelect={ () =>
+                                    selectedFaces.forEach(face => {
+                                        console.log(`Classifying face ${face} as ${name}`);
+                                        classifyFace(face, name);
+                                    })} key={name} className="h-9 flex items-center justify-between min-w-50">
                                     {/* <DropdownMenu.Item onSelect={async () => {
                                         await classifyFace(img.split("face=")[1], name);
                                         onClassified?.();
                                     }} key={name} className="h-9 flex items-center justify-between min-w-50"> */}
-                                        <span className="capitalize blur">{name}</span>
+                                        <span className="capitalize ">{name}</span>
                                     </DropdownMenu.Item>
                             ))
 

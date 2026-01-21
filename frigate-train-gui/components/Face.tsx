@@ -18,7 +18,7 @@ export default function Face({img, name, percent, faceNames, onClassified, selec
     return (
         <div className={`inline-block mx-1 p-2 ${isSelected ? "outline-2 outline-red-400 rounded-lg" : ""}`} onContextMenu={(e) => {e.preventDefault(); onRightClick?.()}}>
 
-            <img src={img} alt={name} className="w-44 h-44 rounded-lg blur"/>
+            <img src={img} alt={name} className="w-44 h-44 rounded-lg "/>
             <div className="columns-2">
                 <div className="text-sm">
                     {percent === -1 && <br />}
