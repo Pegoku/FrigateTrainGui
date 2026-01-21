@@ -16,7 +16,7 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
 
     // const [selectedFace, setSelectedFace] = useState("train");
     return (
-        <header>
+        <header className="sticky top-0 z-10 bg-zinc-900">
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
                     <button className="p-2 m-2 bg-zinc-800 rounded-lg capitalize">
