@@ -48,7 +48,7 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
             {selectedFaces && selectedFaces.length > 0 && (
             <DropdownMenu.Root >
                 <DropdownMenu.Trigger asChild>
-                    <button className="bg-zinc-800 p-2 mt-2 hover:bg-zinc-700 rounded-lg">
+                    <button className="bg-zinc-800 p-2 m-2 hover:bg-zinc-700 rounded-lg float-right">
                         Classify ({selectedFaces.length}) faces
                     </button>
                 </DropdownMenu.Trigger>
