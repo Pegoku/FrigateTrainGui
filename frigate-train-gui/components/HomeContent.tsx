@@ -92,6 +92,26 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
     })
   }
 
+  const handleGroupRightClick = (timestamp: string) => {
+    const facesInGroup = groupedFaces[timestamp];
+    const allSelected = facesInGroup.every(face => selectedFaces.includes(face));
+    if (allSelected) {
+      // Deselect all
+      facesInGroup.forEach(face => {
+        setSelectedFaces(prev => {
+          return prev.filter(f => f !== face);
+        })
+      })
+    } else {
+      facesInGroup.forEach(face => {
+        if (selectedFaces.includes(face)) return;
+        setSelectedFaces(prev => {
+          return [...prev, face];
+        })
+      })
+    }
+  }
+
   return (
     <>
       <Header
@@ -107,6 +127,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
             <div
               key={timestamp}
               className="m-1 p-2 bg-zinc-800 rounded-lg inline-block"
+              onContextMenu={(e) => {e.preventDefault(); handleGroupRightClick(timestamp);}}
             >
               <h3 className="mb-1 capitalize blur">
                 Person: {maxName[timestamp]}{" "}

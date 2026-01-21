@@ -65,11 +65,7 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
                                     });
                                     onClassified?.();
                                 }} key={name} className="h-9 flex items-center justify-between min-w-50 hover:bg-zinc-700">
-                                    {/* <DropdownMenu.Item onSelect={async () => {
-                                        await classifyFace(img.split("face=")[1], name);
-                                        onClassified?.();
-                                    }} key={name} className="h-9 flex items-center justify-between min-w-50"> */}
-                                        <span className="capitalize ">{name}</span>
+                                        <span className="capitalize blur">{name}</span>
                                     </DropdownMenu.Item>
                             ))
 
