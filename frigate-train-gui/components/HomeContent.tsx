@@ -15,6 +15,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
   
   const handleRefresh = () => {
     router.refresh();
+    setSelectedFaces([]); 
   };
   
   const faceNames: string[] = Object.keys(faceData);
@@ -98,6 +99,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
         selectedFace={selectedFace}
         setSelectedFace={setSelectedFace}
         selectedFaces={selectedFaces}
+        onClassified={handleRefresh}
       />
       <main>
         {Object.entries(groupedFaces).map(([timestamp, faceList]) =>

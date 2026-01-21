@@ -1,5 +1,6 @@
 "use client";
 import { classifyFace } from "@/utils/main";
+import { on } from "events";
 import { DropdownMenu, Tooltip } from "radix-ui";
 import { useState } from "react";
 
@@ -8,9 +9,10 @@ interface HeaderProps {
     selectedFace: string;
     setSelectedFace: (face: string) => void;
     selectedFaces?: string[];
+    onClassified?: () => void;
 }
 
-export default function Header({ faces, selectedFace, setSelectedFace, selectedFaces }: HeaderProps) {
+export default function Header({ faces, selectedFace, setSelectedFace, selectedFaces, onClassified }: HeaderProps) {
 
     // const [selectedFace, setSelectedFace] = useState("train");
     return (
@@ -56,11 +58,13 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
                         {/* <DropdownMenu.Label className="text-zinc-400 mb-2 text-b">Train face as:</DropdownMenu.Label> */}
                         {
                             Object.entries(faces).map(([name, _]) => name).filter(name => name !== "train").map((name) => (
-                                <DropdownMenu.Item onSelect={ () =>
+                                <DropdownMenu.Item onSelect={() => {
                                     selectedFaces.forEach(face => {
                                         console.log(`Classifying face ${face} as ${name}`);
                                         classifyFace(face, name);
-                                    })} key={name} className="h-9 flex items-center justify-between min-w-50">
+                                    });
+                                    onClassified?.();
+                                }} key={name} className="h-9 flex items-center justify-between min-w-50">
                                     {/* <DropdownMenu.Item onSelect={async () => {
                                         await classifyFace(img.split("face=")[1], name);
                                         onClassified?.();
