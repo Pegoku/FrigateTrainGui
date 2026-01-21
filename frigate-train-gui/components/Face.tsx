@@ -6,6 +6,7 @@ import { DropdownMenu } from "radix-ui";
 interface FaceProps{
     img: string;
     name: string;
+    allSelected?: boolean;
     percent: number;
     faceNames: string[];
     onClassified?: () => void;
@@ -14,9 +15,9 @@ interface FaceProps{
     isSelected?: boolean;
 }
 
-export default function Face({img, name, percent, faceNames, onClassified, selectedFace, onRightClick, isSelected}: FaceProps) {
+export default function Face({img, name, allSelected, percent, faceNames, onClassified, selectedFace, onRightClick, isSelected}: FaceProps) {
     return (
-        <div className={`inline-block mx-1 p-2 ${isSelected ? "outline-2 outline-red-400 rounded-lg" : ""}`} onContextMenu={(e) => {e.preventDefault(); e.stopPropagation(); onRightClick?.();}}>
+        <div className={`inline-block mx-1 p-2 ${isSelected && !allSelected ? "outline-2 outline-red-400 rounded-lg" : ""}`} onContextMenu={(e) => {e.preventDefault(); e.stopPropagation(); onRightClick?.();}}>
 
             <img src={img} alt={name} className="w-44 h-44 rounded-lg blur"/>
             <div className="columns-2">

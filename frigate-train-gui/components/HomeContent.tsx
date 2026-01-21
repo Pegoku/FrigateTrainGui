@@ -91,11 +91,13 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
       }
     })
   }
-
+  const allSelected = (timestamp: string) => {
+    const facesInGroup = groupedFaces[timestamp];
+    return facesInGroup.every(face => selectedFaces.includes(face));
+  }
   const handleGroupRightClick = (timestamp: string) => {
     const facesInGroup = groupedFaces[timestamp];
-    const allSelected = facesInGroup.every(face => selectedFaces.includes(face));
-    if (allSelected) {
+    if (allSelected(timestamp)) {
       // Deselect all
       facesInGroup.forEach(face => {
         setSelectedFaces(prev => {
@@ -126,7 +128,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
           selectedFace === "train" ? (
             <div
               key={timestamp}
-              className="m-1 p-2 bg-zinc-800 rounded-lg inline-block"
+              className={`m-1 p-2 bg-zinc-800 rounded-lg inline-block ${allSelected(timestamp) ? "outline-2 outline-red-400 rounded-lg" : ""}`}
               onContextMenu={(e) => {e.preventDefault(); handleGroupRightClick(timestamp);}}
             >
               <h3 className="mb-1 capitalize blur">
@@ -148,6 +150,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
                     key={face}
                     img={`/api/face-image?faceName=${selectedFace}&face=${face}`}
                     name={name}
+                    allSelected={allSelected(timestamp)}
                     percent={confidence}
                     faceNames={faceNames}
                     onClassified={handleRefresh}
