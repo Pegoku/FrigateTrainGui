@@ -26,3 +26,7 @@ body {
   font-family: var(--font-sans);
 }
 
+.clickable {
+  @apply cursor-pointer bg-zinc-800 hover:bg-zinc-700 ;
+}
+

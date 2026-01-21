@@ -28,7 +28,7 @@ export default function Face({img, name, percent, faceNames, onClassified, selec
             {selectedFace === "train" && (
                 <DropdownMenu.Root >
                     <DropdownMenu.Trigger asChild>
-                        <button className="p-1 mt-2 hover:bg-zinc-700 rounded-lg">
+                        <button className="p-1 mt-2 clickable rounded-lg">
                             <ScanFace/>
                         </button>
                     </DropdownMenu.Trigger>
@@ -42,7 +42,7 @@ export default function Face({img, name, percent, faceNames, onClassified, selec
                                         <DropdownMenu.Item onSelect={async () => {
                                             await classifyFace(img.split("face=")[1], name);
                                             onClassified?.();
-                                        }} key={name} className="h-9 flex items-center justify-between min-w-50">
+                                        }} key={name} className="clickable h-9 flex items-center justify-between min-w-50">
                                             <span className="capitalize blur">{name}</span>
                                         </DropdownMenu.Item>
                                     )
