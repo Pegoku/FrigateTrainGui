@@ -1,4 +1,5 @@
 "use client";
+import { classifyFace } from "@/utils/main";
 import { DropdownMenu, Tooltip } from "radix-ui";
 import { useState } from "react";
 
@@ -43,9 +44,31 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
                 </DropdownMenu.Portal>
             </DropdownMenu.Root>
             {selectedFaces && selectedFaces.length > 0 && (
-                <div className="inline-block ml-4 p-2 bg-zinc-700 rounded-lg">
-                    <span className="capitalize">Selected: {selectedFaces.length}</span>
-                </div>
+            <DropdownMenu.Root >
+                <DropdownMenu.Trigger asChild>
+                    <button className="p-1 mt-2 hover:bg-zinc-700 rounded-lg">
+                        Classify ({selectedFaces.length}) faces
+                    </button>
+                </DropdownMenu.Trigger>
+
+                <DropdownMenu.Portal>
+                    <DropdownMenu.Content className="bg-zinc-800 p-2 rounded-lg mt-1 border-2 border-zinc-700" align="start">
+                        <DropdownMenu.Label className="text-zinc-400 mb-2 text-b">Train face as:</DropdownMenu.Label>
+                        {
+                            Object.entries(faces).map(([name, _]) => name).filter(name => name !== "train").map((name) => (
+                                <DropdownMenu.Item onSelect={ () => console.log("Classifying faces as", name) } key={name} className="h-9 flex items-center justify-between min-w-50">
+                                    {/* <DropdownMenu.Item onSelect={async () => {
+                                        await classifyFace(img.split("face=")[1], name);
+                                        onClassified?.();
+                                    }} key={name} className="h-9 flex items-center justify-between min-w-50"> */}
+                                        <span className="capitalize blur">{name}</span>
+                                    </DropdownMenu.Item>
+                            ))
+
+                        }
+                    </DropdownMenu.Content>
+                </DropdownMenu.Portal>
+            </DropdownMenu.Root>
             )}
         </header>
 
