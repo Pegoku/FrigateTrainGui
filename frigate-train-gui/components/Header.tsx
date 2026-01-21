@@ -54,7 +54,7 @@ export default function Header({ faces, selectedFace, setSelectedFace, selectedF
                 </DropdownMenu.Trigger>
 
                 <DropdownMenu.Portal>
-                    <DropdownMenu.Content className="clickable p-2 rounded-lg mt-1 border-2 border-zinc-700 z-50" align="start">
+                    <DropdownMenu.Content className="bg-zinc-800 p-2 rounded-lg mt-1 border-2 border-zinc-700 z-50" align="start">
                         {/* <DropdownMenu.Label className="text-zinc-400 mb-2 text-b">Train face as:</DropdownMenu.Label> */}
                         {
                             Object.entries(faces).map(([name, _]) => name).filter(name => name !== "train").map((name) => (
