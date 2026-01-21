@@ -77,7 +77,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
   }
   // console.log(groupedFaces);
 
-  const handleFaceRightClick = (face: string) => {
+  const handleFaceClick = (face: string) => {
     setSelectedFaces(prev => {
       if (prev.includes(face)) {
         const newSelection = prev.filter(f => f !== face);
@@ -95,7 +95,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
     const facesInGroup = groupedFaces[timestamp];
     return facesInGroup.every(face => selectedFaces.includes(face));
   }
-  const handleGroupRightClick = (timestamp: string) => {
+  const handleGroupClick = (timestamp: string) => {
     const facesInGroup = groupedFaces[timestamp];
     if (allSelected(timestamp)) {
       // Deselect all
@@ -129,7 +129,8 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
             <div
               key={timestamp}
               className={`m-1 p-2 bg-zinc-800 rounded-lg inline-block ${allSelected(timestamp) ? "outline-2 outline-red-400 rounded-lg" : ""}`}
-              onContextMenu={(e) => {e.preventDefault(); handleGroupRightClick(timestamp);}}
+             onClick={(e) => {e.preventDefault(); e.stopPropagation(); handleGroupClick(timestamp);}}
+              onContextMenu={(e) => {e.preventDefault(); handleGroupClick(timestamp);}}
             >
               <h3 className="mb-1 capitalize blur">
                 Person: {maxName[timestamp]}{" "}
@@ -155,7 +156,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
                     faceNames={faceNames}
                     onClassified={handleRefresh}
                     selectedFace={selectedFace}
-                    onRightClick={() => handleFaceRightClick(face)}
+                    onClick={() => handleFaceClick(face)}
                     isSelected={selectedFaces.includes(face)}
                   />
                 );
