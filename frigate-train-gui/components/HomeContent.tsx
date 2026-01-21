@@ -20,7 +20,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
   
   const faceNames: string[] = Object.keys(faceData);
   const faces: string[] = faceData[selectedFace].sort().reverse();
-  console.log(faces);
+  // console.log(faces);
   // group by timestamp
   // const facesMap: Record<string, number> = {};
   const groupedFaces: Record<string, string[]> = {};
@@ -63,19 +63,19 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
       if (!Number.isNaN(pc)) {
         faceNum += 1;
         maxPercent += pc;
-        console.log(pc);
+        // console.log(pc);
       }
     }
     maxPercent = parseInt((maxPercent / faceNum).toFixed(0));
 
     percentMap[ts] = maxPercent;
-    console.log(
-      `Timestamp: ${ts}, Names: ${JSON.stringify(names)}, Max name: ${
-        maxName[ts]
-      }, Max count: ${maxCount}, Max percent: ${maxPercent}, Face num: ${faceNum}`,
-    );
+    // console.log(
+    //   `Timestamp: ${ts}, Names: ${JSON.stringify(names)}, Max name: ${
+    //     maxName[ts]
+    //   }, Max count: ${maxCount}, Max percent: ${maxPercent}, Face num: ${faceNum}`,
+    // );
   }
-  console.log(groupedFaces);
+  // console.log(groupedFaces);
 
   const handleFaceRightClick = (face: string) => {
     setSelectedFaces(prev => {

@@ -54,6 +54,26 @@ async function updateToken(): Promise<void> {
     process.env.FRIGATE_TOKEN;
     saveToken(process.env.FRIGATE_TOKEN);
 }
+async function checkToken(frigateUrl: string, token: string): Promise<boolean> {
+    try {
+      var testReq = await fetch(frigateUrl + "/api/profile", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      if (!testReq.ok) {
+        console.log("Token check failed with status: " + testReq.status);
+        return false;
+      }
+      console.log("Token is valid.");
+      return true;
+    } catch (error) {
+      console.error("Error checking token:", error);
+      return false;
+    }
+}
 
 export async function getFaceData() {
   
@@ -66,7 +86,7 @@ export async function getFaceData() {
       const decodedToken = jwtDecode(FRIGATE_TOKEN);
       if (decodedToken.exp && decodedToken.exp * 1000 > Date.now()) {
         console.log("Using cached token, valid until " + new Date(decodedToken.exp * 1000).toLocaleString());
-        isTokenValid = true;
+        isTokenValid = await checkToken(FRIGATE_URL, FRIGATE_TOKEN);
       }
     } catch (err) {
       console.log("Invalid token in cache, updating...");
