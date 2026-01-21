@@ -3,7 +3,7 @@ import { Trigger } from "@radix-ui/themes/components/alert-dialog";
 import { ScanFace } from "lucide-react";
 import { DropdownMenu } from "radix-ui";
 
-interface FaceProps{
+interface FaceProps {
     img: string;
     name: string;
     allSelected?: boolean;
@@ -15,49 +15,78 @@ interface FaceProps{
     isSelected?: boolean;
 }
 
-export default function Face({img, name, allSelected, percent, faceNames, onClassified, selectedFace, onClick, isSelected}: FaceProps) {
+export default function Face({
+    img,
+    name,
+    allSelected,
+    percent,
+    faceNames,
+    onClassified,
+    selectedFace,
+    onClick,
+    isSelected,
+}: FaceProps) {
     return (
-        <div className={`inline-block mx-1 p-2 ${isSelected && !allSelected ? "outline-2 outline-red-400 rounded-lg" : ""}`} onClick={(e) => {e.preventDefault(); e.stopPropagation(); onClick?.();}} onContextMenu={(e) => {e.preventDefault(); e.stopPropagation(); onClick?.();}}>
-
-            <img src={img} alt={name} className="w-44 h-44 rounded-lg blur"/>
+        <div
+            className={`inline-block mx-1 p-2 ${isSelected && !allSelected ? "outline-2 outline-red-400 rounded-lg" : ""}`}
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onClick?.();
+            }}
+            onContextMenu={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onClick?.();
+            }}
+        >
+            <img src={img} alt={name} className="w-44 h-44 rounded-lg blur" />
             <div className="columns-2">
                 <div className="text-sm">
                     {percent === -1 && <br />}
                     <h3 className="blur">{name}</h3>
-                    {percent !== -1 && <p className={percent >= 90 ? "text-green-500" : "text-red-500"}>{percent}%</p>}
+                    {percent !== -1 && (
+                        <p className={percent >= 90 ? "text-green-500" : "text-red-500"}>
+                            {percent}%
+                        </p>
+                    )}
                 </div>
-            {selectedFace === "train" && (
-                <DropdownMenu.Root >
-                    <DropdownMenu.Trigger asChild>
-                        <button className="p-1 mt-2 clickable rounded-lg">
-                            <ScanFace/>
-                        </button>
-                    </DropdownMenu.Trigger>
+                {selectedFace === "train" && (
+                    <DropdownMenu.Root>
+                        <DropdownMenu.Trigger asChild>
+                            <button className="p-1 mt-2 clickable rounded-lg">
+                                <ScanFace />
+                            </button>
+                        </DropdownMenu.Trigger>
 
-                    <DropdownMenu.Portal>
-                        <DropdownMenu.Content className="bg-zinc-800 p-2 rounded-lg mt-1 border-2 border-zinc-700" align="start">
-                            <DropdownMenu.Label className="text-zinc-400 mb-2 text-b">Train face as:</DropdownMenu.Label>
-                            {
-                                faceNames.map((name) => (
-                                    name !== "train" && (
-                                        <DropdownMenu.Item onSelect={async () => {
-                                            await classifyFace(img.split("face=")[1], name);
-                                            onClassified?.();
-                                        }} key={name} className="clickable h-9 flex items-center justify-between min-w-50">
-                                            <span className="capitalize blur">{name}</span>
-                                        </DropdownMenu.Item>
-                                    )
-                                ))
-
-                            }
-                        </DropdownMenu.Content>
-                    </DropdownMenu.Portal>
-                </DropdownMenu.Root>
-            )}
+                        <DropdownMenu.Portal>
+                            <DropdownMenu.Content
+                                className="bg-zinc-800 p-2 rounded-lg mt-1 border-2 border-zinc-700"
+                                align="start"
+                            >
+                                <DropdownMenu.Label className="text-zinc-400 mb-2 text-b">
+                                    Train face as:
+                                </DropdownMenu.Label>
+                                {faceNames.map(
+                                    (name) =>
+                                        name !== "train" && (
+                                            <DropdownMenu.Item
+                                                onSelect={async () => {
+                                                    await classifyFace(img.split("face=")[1], name);
+                                                    onClassified?.();
+                                                }}
+                                                key={name}
+                                                className="clickable h-9 flex items-center justify-between min-w-50"
+                                            >
+                                                <span className="capitalize blur">{name}</span>
+                                            </DropdownMenu.Item>
+                                        ),
+                                )}
+                            </DropdownMenu.Content>
+                        </DropdownMenu.Portal>
+                    </DropdownMenu.Root>
+                )}
             </div>
-
         </div>
-
-    )
-
+    );
 }
