@@ -154,6 +154,7 @@ export default function HomeContent({ faceData, faceCount }: HomeContentProps) {
                                 {maxName[timestamp] != "unknown"
                                     ? "(" + percentMap[timestamp] + "%)"
                                     : ""}
+                                {" "}@ {new Date(parseFloat(timestamp) * 1000).toLocaleString()}
                             </h3>
 
                             {faceList.map((face) => {
